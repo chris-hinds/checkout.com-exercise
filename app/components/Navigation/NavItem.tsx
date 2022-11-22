@@ -4,7 +4,7 @@ import { NavItemProps } from "../../../typings";
 const NavItem = ({ label, path }: NavItemProps) => {
   return (
     <li className="mr-6">
-      <a className="text-blue-500 hover:text-blue-800" href={path}>
+      <a className="text-white hover:text-slate-300" href={path}>
         {label}
       </a>
     </li>
