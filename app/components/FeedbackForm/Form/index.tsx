@@ -21,11 +21,21 @@ const FeedbackForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFormSubmit = (e: SyntheticEvent) => {
+  const handleFormSubmit = async (e: SyntheticEvent) => {
     // Prevent form submission from refreshing the page
     e.preventDefault();
 
-    alert(JSON.stringify(formData, null, 2)); // Sanitize string data
+    try {
+      await fetch("/api/submitFeedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
