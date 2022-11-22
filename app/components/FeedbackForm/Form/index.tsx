@@ -2,6 +2,7 @@
 
 // Framework
 import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Components
 import InputField from "../../FormElements/InputField";
@@ -11,9 +12,12 @@ import TextArea from "../../FormElements/TextArea";
 // Data
 import { startRatingOptions } from "../StarRatingOptions";
 import { initialFeedbackFormState } from "../FeedbackFormState";
+import Button from "../../Button";
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState(initialFeedbackFormState);
+  const [formDataIsSaving, setFormDataIsSaving] = useState(false);
+  const router = useRouter();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -25,16 +29,29 @@ const FeedbackForm = () => {
     // Prevent form submission from refreshing the page
     e.preventDefault();
 
+    // Set loading state
+    setFormDataIsSaving(true);
+
+    // TODO: Validate form data
+
     try {
-      await fetch("/api/submitFeedback", {
+      const saveFormDataResponse = await fetch("/api/submitFeedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
+
+      saveFormDataResponse.json();
+
+      router.push("/results");
     } catch (error) {
       console.error(error);
+      alert("error saving feedback response");
+    } finally {
+      setFormDataIsSaving(false);
+      setFormData(initialFeedbackFormState);
     }
   };
 
@@ -73,13 +90,12 @@ const FeedbackForm = () => {
         </div>
       </div>
       <div className="my-4 w-1/2 lg:w-1/4">
-        <button
+        <Button
           type="submit"
-          className="uppercase text-sm font-bold tracking-wide bg-brand text-gray-100 p-3 rounded-lg w-full 
-            focus:outline-none focus:shadow-outline"
-        >
-          Send Message
-        </button>
+          label="Send Feedback"
+          isDisabled={formDataIsSaving}
+          isLoading={formDataIsSaving}
+        />
       </div>
     </form>
   );

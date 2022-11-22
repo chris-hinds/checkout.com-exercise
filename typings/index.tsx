@@ -1,4 +1,10 @@
-import { ChangeEvent, HTMLInputTypeAttribute } from "react";
+import {
+  ButtonHTMLAttributes,
+  ChangeEvent,
+  DetailedHTMLProps,
+  HTMLInputTypeAttribute,
+  MouseEventHandler,
+} from "react";
 
 export type NavItemProps = {
   label: string;
@@ -36,4 +42,19 @@ export type SelectFieldType = {
   onBlur?: (event: ChangeEvent<HTMLSelectElement>) => void;
   value?: string;
   options: SelectFieldOption[];
+};
+
+export type FeedbackResponseType = {
+  name: string;
+  email: string;
+  rating: number;
+  comment: string;
+};
+
+export type ButtonType = {
+  type?: "submit" | "reset" | "button";
+  label: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  isLoading?: boolean;
+  isDisabled?: boolean;
 };
