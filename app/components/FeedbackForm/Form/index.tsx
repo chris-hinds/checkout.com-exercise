@@ -35,7 +35,7 @@ const FeedbackForm = () => {
     // TODO: Validate form data
 
     try {
-      const saveFormDataResponse = await fetch("/api/submitFeedback", {
+      await fetch("/api/submitFeedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,14 +43,14 @@ const FeedbackForm = () => {
         body: JSON.stringify(formData),
       });
 
-      saveFormDataResponse.json();
-
       router.push("/results");
     } catch (error) {
       console.error(error);
-      alert("error saving feedback response");
     } finally {
+      // Remove loading state
       setFormDataIsSaving(false);
+
+      // Reset form state
       setFormData(initialFeedbackFormState);
     }
   };
