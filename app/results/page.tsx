@@ -1,15 +1,19 @@
+// Typings
 import { GetFeedbackResultsType } from "../../typings";
+
+// Components
 import FeedBackRatingsChart from "./components/FeedBackRatingsChart";
 import FeedbackResults from "./components/FeedbackResults";
 
+// Config
+import { HOST_URL } from "../../utils/Config";
+
 const getFeedbackResults = async (): Promise<GetFeedbackResultsType[]> => {
   try {
-    const response = await fetch(
-      `${process.env.BASE_FETCH_URL}/api/getFeedbackResults`
-    );
+    const response = await fetch(`${HOST_URL}/api/getFeedbackResults`);
 
     return await response.json();
-  } catch (error) {
+  } catch (error: any) {
     throw new Error("Failed to fetch feedback results", error);
   }
 };

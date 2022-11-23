@@ -4,14 +4,15 @@ import { RatingsSpreadType } from "../../../../typings";
 // Components
 import BarChart from "../BarChart";
 
+// Config
+import { HOST_URL } from "../../../../utils/Config";
+
 const getFeedbackResults = async (): Promise<RatingsSpreadType> => {
   try {
-    const response = await fetch(
-      `${process.env.BASE_FETCH_URL}/api/getRatingsSpread`
-    );
+    const response = await fetch(`${HOST_URL}/api/getRatingsSpread`);
 
     return await response.json();
-  } catch (error) {
+  } catch (error: any) {
     throw new Error("Failed to fetch ratings spread", error);
   }
 };
