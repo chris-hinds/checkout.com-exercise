@@ -20,6 +20,7 @@ const getRatingsSpread = async (req: NextApiRequest, res: NextApiResponse) => {
     const sumOfRatings = ratingsSpread.map((value) => {
       let sum = 0;
       data.map((dataPoint) => {
+        // @ts-ignore
         if (parseInt(dataPoint.data.rating) === value) {
           sum += 1;
         }
