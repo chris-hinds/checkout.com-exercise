@@ -1,5 +1,6 @@
 // Typings
 import { GetFeedbackResultsType } from "../../../../typings";
+import StarRating from "../StarRating";
 
 const ResultCard = ({ feedback }: { feedback: GetFeedbackResultsType }) => {
   const { name, email, rating, comment } = feedback.data;
@@ -22,7 +23,7 @@ const ResultCard = ({ feedback }: { feedback: GetFeedbackResultsType }) => {
           </p>
         </div>
         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-          {rating}
+          <StarRating rating={parseInt(rating)} />
         </div>
       </div>
       <div className="mt-2">

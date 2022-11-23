@@ -1,5 +1,5 @@
 import { GetFeedbackResultsType } from "../../typings";
-import FeedbackResults from "./compoents/FeedbackResults";
+import FeedbackResults from "./components/FeedbackResults";
 
 const getFeedbackResults = async (): Promise<GetFeedbackResultsType[]> => {
   try {
