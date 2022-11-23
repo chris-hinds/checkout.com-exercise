@@ -64,3 +64,8 @@ export type GetFeedbackResultsType = {
   data: FeedbackResponseType;
   id: string;
 };
+
+export type RatingsSpreadType = {
+  labels: string[];
+  data: number[];
+};

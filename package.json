@@ -6,9 +6,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "chart.js": "^4.0.1",
     "faunadb": "^4.7.1",
     "next": "latest",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.0.1",
     "react-dom": "18.2.0"
   },
   "devDependencies": {

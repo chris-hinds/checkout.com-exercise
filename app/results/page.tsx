@@ -1,4 +1,5 @@
 import { GetFeedbackResultsType } from "../../typings";
+import FeedBackRatingsChart from "./components/FeedBackRatingsChart";
 import FeedbackResults from "./components/FeedbackResults";
 
 const getFeedbackResults = async (): Promise<GetFeedbackResultsType[]> => {
@@ -18,6 +19,7 @@ const ResultsPage = async () => {
 
   return (
     <div className="container mx-auto">
+      <FeedBackRatingsChart />
       <h1 className="font-bold uppercase text-2xl">
         Latest Comments - ({feedbackResults.length ?? 0})
       </h1>
