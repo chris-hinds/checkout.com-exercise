@@ -58,3 +58,9 @@ export type ButtonType = {
   isLoading?: boolean;
   isDisabled?: boolean;
 };
+
+export type GetFeedbackResultsType = {
+  ts: number;
+  data: FeedbackResponseType;
+  id: string;
+};

@@ -9,8 +9,8 @@ const query = faunadb.query;
 
 const FEEDBACK_RESPONSES_COLLECTION = "feedback-responses";
 
-const getFeedbackResponses = async () => {
-  const data = await faunaClient.query(
+const getFeedbackResponses = async (): Promise<FeedbackResponseType[]> => {
+  const { data } = await faunaClient.query(
     query.Map(
       query.Paginate(
         query.Documents(query.Collection(FEEDBACK_RESPONSES_COLLECTION))
@@ -19,12 +19,14 @@ const getFeedbackResponses = async () => {
     )
   );
 
-  //   const feedbackResponses = data.map((response) => {
-  //     response.id = response.ref.id;
-  //     delete response.ref;
+  const feedbackResponses = data.map((response: any) => {
+    response.id = response.ref.id;
+    delete response.ref;
 
-  //     return response;
-  //   });
+    return response;
+  });
+
+  return feedbackResponses;
 };
 
 const saveFeedbackResponse = async (feedbackResponse: FeedbackResponseType) => {
