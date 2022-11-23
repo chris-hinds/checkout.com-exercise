@@ -1,5 +1,5 @@
 import faunadb from "faunadb";
-import { FeedbackResponseType } from "../typings";
+import { FeedbackResponseType, GetFeedbackResultsType } from "../typings";
 
 const faunaClient = new faunadb.Client({
   secret: process.env.FAUNA_SECRET as string,
@@ -9,7 +9,8 @@ const query = faunadb.query;
 
 const FEEDBACK_RESPONSES_COLLECTION = "feedback-responses";
 
-const getFeedbackResponses = async (): Promise<FeedbackResponseType[]> => {
+const getFeedbackResponses = async (): Promise<GetFeedbackResultsType[]> => {
+  // @ts-ignore
   const { data } = await faunaClient.query(
     query.Map(
       query.Paginate(

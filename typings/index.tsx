@@ -47,7 +47,7 @@ export type SelectFieldType = {
 export type FeedbackResponseType = {
   name: string;
   email: string;
-  rating: number;
+  rating: number | string;
   comment: string;
 };
 
@@ -60,7 +60,7 @@ export type ButtonType = {
 };
 
 export type GetFeedbackResultsType = {
-  ts: number;
+  ts: string;
   data: FeedbackResponseType;
   id: string;
 };
