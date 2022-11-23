@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import InputField from "../../FormElements/InputField";
 import Select from "../../FormElements/Select";
 import TextArea from "../../FormElements/TextArea";
+import ErrorNotification from "../../ErrorNotification";
 
 // Data
 import { startRatingOptions } from "../StarRatingOptions";
@@ -17,6 +18,7 @@ import Button from "../../Button";
 const FeedbackForm = () => {
   const [formData, setFormData] = useState(initialFeedbackFormState);
   const [formDataIsSaving, setFormDataIsSaving] = useState(false);
+  const [hasSubmissionError, setHasSubmissionError] = useState(false);
   const router = useRouter();
 
   const handleInputChange = (
@@ -35,7 +37,7 @@ const FeedbackForm = () => {
     // TODO: Validate form data
 
     try {
-      await fetch("/api/submitFeedback", {
+      const response = await fetch("/api/submitFeedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +45,17 @@ const FeedbackForm = () => {
         body: JSON.stringify(formData),
       });
 
-      router.push("/results");
+      if (response.status == 409) {
+        setHasSubmissionError(true);
+      }
+
+      if (response.ok) {
+        // Reset error state
+        setHasSubmissionError(false);
+
+        router.push("/results");
+        return;
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -56,48 +68,53 @@ const FeedbackForm = () => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-5 lg:gap-y-0 lg:gap-5 mt-5">
-        <div className="grid gap-5 col-span-1">
-          <InputField
-            type="text"
-            name="name"
-            placeholder="Name*"
-            required={true}
-            onChange={handleInputChange}
-          />
-          <InputField
-            type="email"
-            name="email"
-            placeholder="Email*"
-            required={true}
-            onChange={handleInputChange}
-          />
-          <Select
-            name="rating"
-            options={startRatingOptions}
-            onChange={handleInputChange}
-            required={true}
+    <>
+      <form onSubmit={handleFormSubmit}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-5 lg:gap-y-0 lg:gap-5 mt-5">
+          <div className="grid gap-5 col-span-1">
+            <InputField
+              type="text"
+              name="name"
+              placeholder="Name*"
+              required={true}
+              onChange={handleInputChange}
+            />
+            <InputField
+              type="email"
+              name="email"
+              placeholder="Email*"
+              required={true}
+              onChange={handleInputChange}
+            />
+            <Select
+              name="rating"
+              options={startRatingOptions}
+              onChange={handleInputChange}
+              required={true}
+            />
+          </div>
+          <div className="col-span-2">
+            <TextArea
+              name="comment"
+              placeholder="Comment*"
+              required={true}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+        <div className="my-4 w-1/2 lg:w-1/4">
+          <Button
+            type="submit"
+            label="Send Feedback"
+            isDisabled={formDataIsSaving}
+            isLoading={formDataIsSaving}
           />
         </div>
-        <div className="col-span-2">
-          <TextArea
-            name="comment"
-            placeholder="Comment*"
-            required={true}
-            onChange={handleInputChange}
-          />
-        </div>
-      </div>
-      <div className="my-4 w-1/2 lg:w-1/4">
-        <Button
-          type="submit"
-          label="Send Feedback"
-          isDisabled={formDataIsSaving}
-          isLoading={formDataIsSaving}
-        />
-      </div>
-    </form>
+      </form>
+      {hasSubmissionError && (
+        <ErrorNotification message="This email address has already been used to submit a review." />
+      )}
+    </>
   );
 };
 

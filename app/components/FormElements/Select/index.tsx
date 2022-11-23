@@ -11,7 +11,11 @@ const Select = ({ options, name, required, onChange }: SelectFieldType) => {
       onChange={onChange}
     >
       {options.map(({ value, label }: SelectFieldOption, OptionIndex) => (
-        <option key={`option-${OptionIndex}`} value={value}>
+        <option
+          key={`option-${OptionIndex}`}
+          selected={OptionIndex == 0}
+          value={value}
+        >
           {label}
         </option>
       ))}
