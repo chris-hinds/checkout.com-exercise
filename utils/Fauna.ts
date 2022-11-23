@@ -13,7 +13,9 @@ const getFeedbackResponses = async (): Promise<FeedbackResponseType[]> => {
   const { data } = await faunaClient.query(
     query.Map(
       query.Paginate(
-        query.Documents(query.Collection(FEEDBACK_RESPONSES_COLLECTION))
+        query.Reverse(
+          query.Documents(query.Collection(FEEDBACK_RESPONSES_COLLECTION))
+        )
       ),
       query.Lambda("ref", query.Get(query.Var("ref")))
     )
