@@ -28,7 +28,7 @@ const ResultCard = ({ feedback }: { feedback: GetFeedbackResultsType }) => {
         </div>
       </div>
       <div className="mt-2">
-        <p>{comment}</p>
+        <p className="break-words">{comment}</p>
       </div>
     </li>
   );

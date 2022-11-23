@@ -1,6 +1,6 @@
 export const initialFeedbackFormState = {
   name: "",
   email: "",
-  rating: "",
+  rating: 0,
   comment: "",
 };

@@ -4,22 +4,35 @@
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Schema
+import { feedbackFormSchema } from "../../../../utils/FormValidation";
+
 // Components
 import InputField from "../../FormElements/InputField";
 import Select from "../../FormElements/Select";
 import TextArea from "../../FormElements/TextArea";
 import ErrorNotification from "../../ErrorNotification";
+import Button from "../../Button";
 
 // Data
 import { startRatingOptions } from "../StarRatingOptions";
 import { initialFeedbackFormState } from "../FeedbackFormState";
-import Button from "../../Button";
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState(initialFeedbackFormState);
   const [formDataIsSaving, setFormDataIsSaving] = useState(false);
   const [hasSubmissionError, setHasSubmissionError] = useState(false);
+  const [hasValidationError, setHasValidationError] = useState("");
   const router = useRouter();
+
+  const resetFormErrorState = () => {
+    setHasSubmissionError(false);
+    setHasValidationError("");
+  };
+
+  const resetFormLoadingState = () => {
+    setFormDataIsSaving(false);
+  };
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -31,39 +44,37 @@ const FeedbackForm = () => {
     // Prevent form submission from refreshing the page
     e.preventDefault();
 
+    resetFormErrorState();
+
     // Set loading state
     setFormDataIsSaving(true);
 
-    // TODO: Validate form data
-
     try {
+      const validatedFormData = await feedbackFormSchema.validate(formData);
+
       const response = await fetch("/api/submitFeedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(validatedFormData),
       });
 
       if (response.status == 409) {
         setHasSubmissionError(true);
+        return;
       }
 
       if (response.ok) {
-        // Reset error state
-        setHasSubmissionError(false);
-
+        resetFormErrorState();
+        resetFormErrorState();
         router.push("/results");
         return;
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      setHasValidationError(error.message);
     } finally {
-      // Remove loading state
-      setFormDataIsSaving(false);
-
-      // Reset form state
-      setFormData(initialFeedbackFormState);
+      resetFormLoadingState();
     }
   };
 
@@ -114,6 +125,8 @@ const FeedbackForm = () => {
       {hasSubmissionError && (
         <ErrorNotification message="This email address has already been used to submit a review." />
       )}
+
+      {hasValidationError && <ErrorNotification message={hasValidationError} />}
     </>
   );
 };
