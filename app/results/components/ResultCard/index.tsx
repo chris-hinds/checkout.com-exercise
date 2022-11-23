@@ -23,7 +23,7 @@ const ResultCard = ({ feedback }: { feedback: GetFeedbackResultsType }) => {
           </p>
         </div>
         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-          <StarRating rating={parseInt(rating)} />
+          <StarRating rating={rating} />
         </div>
       </div>
       <div className="mt-2">

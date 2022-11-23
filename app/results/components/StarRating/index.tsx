@@ -1,4 +1,4 @@
-const StarRating = ({ rating }: { rating: string }) => {
+const StarRating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex items-center mt-2.5 mb-5">
       {[...Array(rating)].map((_starRating, starRatingIndex) => (
