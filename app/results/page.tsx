@@ -1,4 +1,5 @@
-import { FeedbackResponseType, GetFeedbackResultsType } from "../../typings";
+import { GetFeedbackResultsType } from "../../typings";
+import FeedbackResults from "./compoents/FeedbackResults";
 
 const getFeedbackResults = async (): Promise<GetFeedbackResultsType[]> => {
   try {
@@ -16,11 +17,11 @@ const ResultsPage = async () => {
   const feedbackResults = await getFeedbackResults();
 
   return (
-    <div>
-      {feedbackResults &&
-        feedbackResults.map((feedback: GetFeedbackResultsType) => (
-          <p>{feedback.data.email}</p>
-        ))}
+    <div className="container mx-auto">
+      <h1 className="font-bold uppercase text-2xl">
+        Latest Comments - ({feedbackResults.length ?? 0})
+      </h1>
+      <FeedbackResults feedbackResults={feedbackResults} />
     </div>
   );
 };
