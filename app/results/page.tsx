@@ -1,5 +1,5 @@
 // Typings
-import { GetFeedbackResultsType } from "../../typings";
+import { GetFeedbackResultsType, RatingsSpreadType } from "../../typings";
 
 // Components
 import FeedBackRatingsChart from "./components/FeedBackRatingsChart";
@@ -18,12 +18,23 @@ const getFeedbackResults = async (): Promise<GetFeedbackResultsType[]> => {
   }
 };
 
+const getRatingsSpread = async (): Promise<RatingsSpreadType> => {
+  try {
+    const response = await fetch(`${HOST_URL}/api/getRatingsSpread`);
+
+    return await response.json();
+  } catch (error: any) {
+    throw new Error("Failed to fetch ratings spread", error);
+  }
+};
+
 const ResultsPage = async () => {
   const feedbackResults = await getFeedbackResults();
+  const ratingsSpreadData = await getRatingsSpread();
 
   return (
     <div className="container mx-auto">
-      <FeedBackRatingsChart />
+      <FeedBackRatingsChart ratingsSpreadData={ratingsSpreadData} />
       <h1 className="font-bold uppercase text-2xl">
         Latest Comments - ({feedbackResults.length ?? 0})
       </h1>
