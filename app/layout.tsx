@@ -1,5 +1,7 @@
 // Styles
 import "../styles/globals.css";
+
+// Components
 import Header from "./components/Header";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -13,7 +15,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <header>
           <Header />
         </header>
-        <main className="p-4">{children}</main>
+        <main data-testid="main" className="p-4">
+          {children}
+        </main>
       </body>
     </html>
   );
