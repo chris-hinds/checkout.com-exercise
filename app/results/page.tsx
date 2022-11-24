@@ -43,6 +43,7 @@ const ResultsPage = async () => {
   );
 };
 
+// This should prevent NextJS trying to pre-render this page at build-time (it fails as the api is not available), however there seems to be a bug in the latest beta
 export const dynamic = "force-dynamic";
 
 export default ResultsPage;
