@@ -7,6 +7,7 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
+  automock: false,
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {},
   testEnvironment: "jest-environment-jsdom",
