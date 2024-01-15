@@ -26,6 +26,7 @@ const getRatingsSpread = async (): Promise<RatingsSpreadType> => {
 
     return await response.json();
   } catch (error: any) {
+    console.log(error);
     throw new Error("Failed to fetch ratings spread", error);
   }
 };
