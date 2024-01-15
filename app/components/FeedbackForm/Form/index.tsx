@@ -17,17 +17,20 @@ import Button from "../../Button";
 // Data
 import { startRatingOptions } from "../StarRatingOptions";
 import { initialFeedbackFormState } from "../FeedbackFormState";
+import { ErrorObjectType } from "../../../../typings";
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState(initialFeedbackFormState);
   const [formDataIsSaving, setFormDataIsSaving] = useState(false);
   const [hasSubmissionError, setHasSubmissionError] = useState(false);
-  const [hasValidationError, setHasValidationError] = useState(undefined);
+  const [hasValidationError, setHasValidationError] = useState<
+    ErrorObjectType | undefined
+  >(undefined);
   const router = useRouter();
 
   const resetFormErrorState = () => {
     setHasSubmissionError(false);
-    setHasValidationError({});
+    setHasValidationError(undefined);
   };
 
   const resetFormLoadingState = () => {
@@ -74,12 +77,11 @@ const FeedbackForm = () => {
         return;
       }
     } catch (error: any) {
-      console.log(error);
       const errorObject = {
         [error.inner[0].path]: error.inner[0].message,
-      };
+      } as ErrorObjectType;
 
-      setHasValidationError(errorObject as any);
+      setHasValidationError(errorObject);
     } finally {
       resetFormLoadingState();
     }
