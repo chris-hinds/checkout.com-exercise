@@ -22,12 +22,12 @@ const FeedbackForm = () => {
   const [formData, setFormData] = useState(initialFeedbackFormState);
   const [formDataIsSaving, setFormDataIsSaving] = useState(false);
   const [hasSubmissionError, setHasSubmissionError] = useState(false);
-  const [hasValidationError, setHasValidationError] = useState("");
+  const [hasValidationError, setHasValidationError] = useState(undefined);
   const router = useRouter();
 
   const resetFormErrorState = () => {
     setHasSubmissionError(false);
-    setHasValidationError("");
+    setHasValidationError({});
   };
 
   const resetFormLoadingState = () => {
@@ -50,7 +50,10 @@ const FeedbackForm = () => {
     setFormDataIsSaving(true);
 
     try {
-      const validatedFormData = await feedbackFormSchema.validate(formData);
+      const validatedFormData = await feedbackFormSchema.validateSync(
+        formData,
+        { abortEarly: false }
+      );
 
       const response = await fetch("/api/submitFeedback", {
         method: "POST",
@@ -67,12 +70,16 @@ const FeedbackForm = () => {
 
       if (response.ok) {
         resetFormErrorState();
-        resetFormErrorState();
         router.push("/results");
         return;
       }
     } catch (error: any) {
-      setHasValidationError(error.message);
+      console.log(error);
+      const errorObject = {
+        [error.inner[0].path]: error.inner[0].message,
+      };
+
+      setHasValidationError(errorObject as any);
     } finally {
       resetFormLoadingState();
     }
@@ -89,6 +96,7 @@ const FeedbackForm = () => {
               placeholder="Name*"
               required={true}
               onChange={handleInputChange}
+              error={hasValidationError}
             />
             <InputField
               type="email"
@@ -96,6 +104,7 @@ const FeedbackForm = () => {
               placeholder="Email*"
               required={true}
               onChange={handleInputChange}
+              error={hasValidationError}
             />
             <Select
               name="rating"
@@ -110,6 +119,7 @@ const FeedbackForm = () => {
               placeholder="Comment*"
               required={true}
               onChange={handleInputChange}
+              error={hasValidationError}
             />
           </div>
         </div>
@@ -125,8 +135,6 @@ const FeedbackForm = () => {
       {hasSubmissionError && (
         <ErrorNotification message="This email address has already been used to submit a review." />
       )}
-
-      {hasValidationError && <ErrorNotification message={hasValidationError} />}
     </>
   );
 };

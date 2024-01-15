@@ -19,6 +19,7 @@ export type InputFieldType = {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  error?: ErrorObjectType;
 };
 
 export type TextAreaType = {
@@ -28,6 +29,7 @@ export type TextAreaType = {
   onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   onBlur?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   value?: string;
+  error?: ErrorObjectType;
 };
 
 export type SelectFieldOption = {
@@ -68,4 +70,10 @@ export type GetFeedbackResultsType = {
 export type RatingsSpreadType = {
   labels: string[];
   data: number[];
+};
+
+export type ErrorObjectType = {
+  [key: string]: string;
+  field: string;
+  message: string;
 };
