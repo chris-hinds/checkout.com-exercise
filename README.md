@@ -25,7 +25,7 @@ If I were writing this project again now these are some of the various improveme
 
 Below this section you will find the original readme.
 
-Please note the project will not run locally without a secret key for the database. because of this I have a deployed the application here for testing. https://checkout-com-exercise-fchv8x4ct-chris-hinds.vercel.app
+Please note the project will not run locally without a secret key for the database. because of this I have a deployed the application here for testing. [https://checkout-com-exercise-fchv8x4ct-chris-hinds.vercel.app](https://checkout-com-exercise-chris-hinds.vercel.app/)
 
 # Checkout.com Coding Exercise
 
